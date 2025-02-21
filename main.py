@@ -12,7 +12,7 @@ def setup():
     print("MH-Z14 CO2 Sensor Test (UART only)")
     # Warm-up period
     print("Warming up the sensor (3 minutes)...")
-    for i in range(180):
+    for i in range(20):
         print(".", end="", flush=True)
         time.sleep(1)
         if (i + 1) % 60 == 0:
