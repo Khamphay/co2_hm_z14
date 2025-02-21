@@ -1,32 +1,27 @@
-#!/usr/bin/env python3
 import serial
 import time
 
-
-class CO2Sensor:
-    request = [0xFF, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79]
-
-    def __init__(self, port="/dev/ttyS0"):
-        self.serial = serial.Serial(port=port, timeout=1)
-
-    def get(self):
-        self.serial.write(bytearray(self.request))
-        response = self.serial.read(9)
-        if len(response) == 9:
-            current_time = time.strftime("%H:%M:%S", time.localtime())
-            return {
-                "time": current_time,
-                "ppa": (response[2] << 8) | response[3],
-                "temp": response[4],
-            }
-        return -1
+ser = serial.Serial("/dev/serial0", 9600, timeout=1)
 
 
-def main():
-    # other Pi versions might need CO2Sensor('/dev/ttyAMA0')
-    sensor = CO2Sensor()
-    print(sensor.get())
+def read_co2():
+    command = bytearray([0xFF, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79])
+    ser.write(command)
+    time.sleep(0.1)
+    response = ser.read(9)
+
+    if len(response) == 9 and response[0] == 0xFF and response[1] == 0x86:
+        co2_value = response[2] * 256 + response[3]
+        return co2_value
+    else:
+        return None
 
 
-if __name__ == "__main__":
-    main()
+while True:
+    co2 = read_co2()
+    if co2:
+        print(f"CO2 Concentration: {co2} ppm")
+    else:
+        print("Failed to read CO2 sensor")
+    time.sleep(2)
+
