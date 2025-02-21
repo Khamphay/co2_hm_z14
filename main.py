@@ -87,7 +87,7 @@ def set_range(ser, range_value):
 
 def saveData(data):
     try:
-        with open("/home/pi/coopsoil/static/data/co2_data.csv", "a") as file:
+        with open(f"/home/pi/coopsoil/static/data/co2_data.csv", "a") as file:
             csv.writer(file, delimiter=";").writerow(data)
             file.close()
     except csv.Error as e:
@@ -118,13 +118,12 @@ def main():
         while True:
             # Read CO2 value
             co2ppm = read_co2_uart(ser)
+            data = [str(datetime.datetime.now()).split(".")[0], co2ppm]
+            saveData(data)
             # Display reading
-            if co2ppm > 0:
-                data = [str(datetime.datetime.now()).split(".")[0], co2ppm]
-                saveData(data)
-
-                # print(f"CO2 Concentration: {co2ppm} ppm")
-                # Optional: Add threshold warnings
+            # if co2ppm > 0:
+            #     print(f"CO2 Concentration: {co2ppm} ppm")
+            # Optional: Add threshold warnings
             #     if co2ppm < 400:
             #         print("Warning: CO2 reading is unusually low. Check sensor.")
             #     elif co2ppm > 1500:
@@ -137,7 +136,7 @@ def main():
             #     print("Failed to read CO2 concentration")
 
             # print("---------------------------")
-            time.sleep(5)  # Wait 5 seconds between readings
+            time.sleep(60)  # Wait 5 seconds between readings
 
     except KeyboardInterrupt:
         print("\nExiting program")
