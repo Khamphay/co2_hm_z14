@@ -31,11 +31,11 @@ def read_co2_uart(ser):
     # Send command to the sensor
     ser.write(cmd)
     # Wait for response
-    time.sleep(1)
+    time.sleep(0.1)
 
     # Read response
-    if ser.in_waiting >= 9:
-        response = ser.read(9)
+    response = ser.read(9)
+    if len(response) == 9:
         print(f"{response}\n")
         # Verify checksum
         checksum = 0
