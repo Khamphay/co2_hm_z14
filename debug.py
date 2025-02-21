@@ -1,7 +1,7 @@
 import serial
 import time
 
-ser = serial.Serial("/dev/serial0", 9600, timeout=1)
+ser = serial.Serial("/dev/ttyS0", 9600, timeout=1)
 
 
 def read_co2():
@@ -24,4 +24,3 @@ while True:
     else:
         print("Failed to read CO2 sensor")
     time.sleep(2)
-
