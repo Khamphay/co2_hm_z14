@@ -1,6 +1,6 @@
 import serial
 import time
-import datetime 
+import datetime
 import csv
 
 # Define serial port settings
@@ -18,6 +18,7 @@ def setup():
         if (i + 1) % 60 == 0:
             print()
     print("\nSensor ready!")
+
 
 def read_co2_uart(ser):
     """
@@ -53,6 +54,7 @@ def read_co2_uart(ser):
         print("No response from sensor (UART)")
         return -1
 
+
 def calibrate_sensor(ser):
     """
     Calibrate the MH-Z14 sensor to 400ppm (assuming fresh air)
@@ -78,9 +80,10 @@ def set_range(ser, range_value):
     ser.write(cmd)
     print(f"Detection range set to {range_value} ppm")
 
+
 def saveData(data):
     try:
-        with open('data.csv', "a") as file:
+        with open("/home/pi/coopsoil/static/data/co2_data.csv", "a") as file:
             csv.writer(file, delimiter=";").writerow(data)
             file.close()
     except csv.Error as e:
@@ -110,7 +113,7 @@ def main():
         while True:
             # Read CO2 value
             co2ppm = read_co2_uart(ser)
-            data = [str(datetime.now()).split(".")[0], co2ppm]
+            data = [str(datetime.datetime.now()).split(".")[0], co2ppm]
             saveData(data)
             # Display reading
             if co2ppm > 0:
