@@ -34,10 +34,9 @@ def read_co2_uart(ser):
     time.sleep(0.1)
 
     # Read response
-    response = serial.read(9)
-    if len(response) == 9:
+    if ser.in_waiting >= 9:
         response = ser.read(9)
-        print(response)
+        print(f"{response}\n")
         # Verify checksum
         checksum = 0
         for i in range(1, 8):
@@ -90,6 +89,7 @@ def saveData(data):
             file.close()
     except csv.Error as e:
         print(f"Write data error: {str(e)}")
+
 
 def main():
     # Setup
