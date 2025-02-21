@@ -18,7 +18,6 @@ def setup():
         if (i + 1) % 60 == 0:
             print()
     print("\nSensor ready!")
-    set_range(5000)
 
 
 def read_co2_uart(ser):
@@ -103,7 +102,7 @@ def main():
     except serial.SerialException as e:
         print(f"Failed to open serial port: {e}")
         return
-
+    set_range(ser, 5000)
     # Test sensor response
     print("Testing sensor response...")
     time.sleep(1)
