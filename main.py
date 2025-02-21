@@ -31,7 +31,7 @@ def read_co2_uart(ser):
     # Send command to the sensor
     ser.write(cmd)
     # Wait for response
-    time.sleep(0.1)
+    time.sleep(1)
 
     # Read response
     if ser.in_waiting >= 9:
@@ -133,7 +133,7 @@ def main():
                 print("Failed to read CO2 concentration")
 
             print("---------------------------")
-            time.sleep(60)  # Wait 5 seconds between readings
+            time.sleep(5)  # Wait 5 seconds between readings
 
     except KeyboardInterrupt:
         print("\nExiting program")
