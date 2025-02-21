@@ -18,6 +18,7 @@ def setup():
         if (i + 1) % 60 == 0:
             print()
     print("\nSensor ready!")
+    set_range(5000)
 
 
 def read_co2_uart(ser):
@@ -61,7 +62,8 @@ def calibrate_sensor(ser):
     Calibrate the MH-Z14 sensor to 400ppm (assuming fresh air)
     Note: Only use in fresh outdoor air!
     """
-    cmd = bytearray([0xFF, 0x01, 0x87, 0x00, 0x00, 0x00, 0x00, 0x00, 0x78])
+    cmd = bytearray([0xFF, 0x01, 0x99, 0x00, 0x00, 0x00, 0x13, 0x88, 0xCB])
+    # bytearray([0xFF, 0x01, 0x87, 0x00, 0x00, 0x00, 0x00, 0x00, 0x78])
     # Send calibration command
     ser.write(cmd)
     print("Calibration command sent. Sensor should be in fresh air (~400ppm)")
