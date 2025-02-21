@@ -34,8 +34,10 @@ def read_co2_uart(ser):
     time.sleep(0.1)
 
     # Read response
-    if ser.in_waiting >= 9:
+    response = serial.read(9)
+    if len(response) == 9:
         response = ser.read(9)
+        print(response)
         # Verify checksum
         checksum = 0
         for i in range(1, 8):
